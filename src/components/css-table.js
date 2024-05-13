@@ -29,7 +29,7 @@ const columns = [
 
 
 
-export default function HtmlTable() {
+export default function CssTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows, setRows]=React.useState([])
@@ -41,7 +41,7 @@ export default function HtmlTable() {
   },[])
   const fetchData=async()=>{
     const db=getDatabase(app)
-    const dbRef=ref(db, "quize/html");
+    const dbRef=ref(db, "quize/css");
     const snapshot= await get(dbRef);
     if(snapshot.exists()){
         const mydata=snapshot.val()
@@ -61,7 +61,7 @@ export default function HtmlTable() {
 const deleteQuestion=async(firebaseId)=>{
     console.log(firebaseId)
     const db=getDatabase(app)
-    const dbref=ref(db,"quize/html/"+firebaseId);
+    const dbref=ref(db,"quize/css/"+firebaseId);
     await remove(dbref);
     window.location.reload()
 }
@@ -132,7 +132,7 @@ const deleteQuestion=async(firebaseId)=>{
                         <TableCell align="left">
                         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                         <span><IconButton onClick={()=>deleteQuestion(row.id)}><DeleteIcon sx={{"&:active": { color: "#FFBF00" }}}/></IconButton></span>
-                        <span><IconButton><Link to={`/htmlupdate/${row.id}`}><EditIcon/></Link></IconButton></span>
+                        <span><IconButton><Link to={`/cssupdate/${row.id}`}><EditIcon/></Link></IconButton></span>
                         </div>
                         </TableCell>
                      

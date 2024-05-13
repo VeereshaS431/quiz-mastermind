@@ -21,7 +21,7 @@ import CssIcon from '@mui/icons-material/Css';
 import JavascriptIcon from '@mui/icons-material/Javascript';
 import StorageIcon from '@mui/icons-material/Storage';
 import { useNavigate } from 'react-router-dom';
-import HtmlTable from '../components/html-table';
+import JavaScriptTable from '../components/javascript-table';
 
 const drawerWidth = 240;
 
@@ -91,7 +91,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 
-export default function HtmlTablePage() {
+export default function JavaScriptTablePage() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const navigate=useNavigate()
@@ -200,7 +200,7 @@ export default function HtmlTablePage() {
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
-               <HtmlTable/>
+          <JavaScriptTable/>
             </Box>
         </Box>
     );

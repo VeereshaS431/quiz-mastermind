@@ -20,8 +20,8 @@ import HtmlIcon from '@mui/icons-material/Html';
 import CssIcon from '@mui/icons-material/Css';
 import JavascriptIcon from '@mui/icons-material/Javascript';
 import StorageIcon from '@mui/icons-material/Storage';
-import { useNavigate } from 'react-router-dom';
-import HtmlTable from '../components/html-table';
+import { useNavigate, useParams } from 'react-router-dom';
+import UpdateHtml from '../components/inputComponents/update-inputs';
 
 const drawerWidth = 240;
 
@@ -91,18 +91,20 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 
-export default function HtmlTablePage() {
+export default function HtmlUpdatePage() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const navigate=useNavigate()
 
-    const htmlRoute=()=>{
+    const {firebaseId}=useParams();
+
+    const htmlRoute = () => {
         navigate("/html")
     }
-    const cssRoute=()=>{
+    const cssRoute = () => {
         navigate("/css")
     }
-    const jsRoute=()=>{
+    const jsRoute = () => {
         navigate("/javascript")
     }
 
@@ -160,9 +162,9 @@ export default function HtmlTablePage() {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    {index == 0 && <HtmlIcon onClick={htmlRoute}/>}
-                                    {index == 1 && <CssIcon onClick={cssRoute}/>}
-                                    {index == 2 && <JavascriptIcon onClick={jsRoute}/>}
+                                    {index == 0 && <HtmlIcon onClick={htmlRoute} />}
+                                    {index == 1 && <CssIcon onClick={cssRoute} />}
+                                    {index == 2 && <JavascriptIcon onClick={jsRoute} />}
 
                                 </ListItemIcon>
                                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
@@ -188,6 +190,7 @@ export default function HtmlTablePage() {
                                         justifyContent: 'center',
                                     }}
                                 >
+                                    {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
                                     {index == 0 && <StorageIcon />}
                                     {index == 1 && <StorageIcon />}
                                     {index == 2 && <StorageIcon />}
@@ -200,7 +203,10 @@ export default function HtmlTablePage() {
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
-               <HtmlTable/>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", flexDirection: "column" }}>
+                <h1>HTML Update</h1>
+                <UpdateHtml firebaseId={firebaseId} />
+                </div>
             </Box>
         </Box>
     );
