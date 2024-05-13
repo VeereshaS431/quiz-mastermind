@@ -6,6 +6,10 @@ import JavaScriptPage from "../admin/javascript-page"
 import { createContext } from "react"
 import HtmlTablePage from "../admin/html-table-page"
 import HtmlUpdatePage from "../admin/html-update-page"
+import CssTablePage from "../admin/css-table-page"
+import JavaScriptTablePage from "../admin/javascript-table-page"
+import CssUpdatePage from "../admin/css-update-page"
+import JavaScriptUpdatePage from "../admin/javascript-update-page"
 
 
 
@@ -22,7 +26,11 @@ export const Navigation=()=>{
             <Route path="/css" Component={CssPage}/>
             <Route path="/javascript" Component={JavaScriptPage}/>
             <Route path="/htmltable" Component={HtmlTablePage}/>
+            <Route path="/csstable" Component={CssTablePage}/>
+            <Route path="/javascriptTable" Component={JavaScriptTablePage}/>
             <Route path="/htmlupdate/:firebaseId" Component={HtmlUpdatePage}/>
+            <Route path="/cssupdate/:firebaseId" Component={CssUpdatePage}/>
+            <Route path="/jsupdate/:firebaseId" Component={JavaScriptUpdatePage}/>
         </Routes>
         </BrowserRouter>
         </DataShare.Provider>

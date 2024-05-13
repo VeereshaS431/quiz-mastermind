@@ -16,14 +16,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import HtmlIcon from '@mui/icons-material/Html';
 import CssIcon from '@mui/icons-material/Css';
 import JavascriptIcon from '@mui/icons-material/Javascript';
 import StorageIcon from '@mui/icons-material/Storage';
-import { HtmlPage } from './html-page';
-import { DataShare } from '../routers/navigation-stack';
+
 import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -109,6 +106,18 @@ export default function MiniDrawer() {
         navigate("/javascript")
     }
 
+    const htmlTableRoute=()=>{
+        navigate("/htmltable")
+    }
+
+    const cssTableRoute=()=>{
+        navigate("/csstable")
+    }
+
+    const jsTableRoute=()=>{
+        navigate("/javascriptTable")
+    }
+
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -147,8 +156,8 @@ export default function MiniDrawer() {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {['HTML', 'CSS', 'JavaScript'].map((text, index) => (
-                        <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                    {[{text:'HTML',function:htmlRoute}, {text:'CSS',function:cssRoute}, {text:"JavaScript",function:jsRoute}].map((text, index) => (
+                        <ListItem key={text.text} disablePadding sx={{ display: 'block' }} onClick={text.function}>
                             <ListItemButton
                                 sx={{
                                     minHeight: 48,
@@ -168,15 +177,15 @@ export default function MiniDrawer() {
                                     {index == 2 && <JavascriptIcon onClick={jsRoute}/>}
 
                                 </ListItemIcon>
-                                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                                <ListItemText primary={text.text} sx={{ opacity: open ? 1 : 0 }} />
                             </ListItemButton>
                         </ListItem>
                     ))}
                 </List>
                 <Divider />
                 <List>
-                    {['HTML Data', 'CSS Data', 'JavaScript Data'].map((text, index) => (
-                        <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                    {[{text:'HTML Data',function:htmlTableRoute},{text:'CSS Data',function:cssTableRoute},{text:'JavaScript Data',function:jsTableRoute}].map((text, index) => (
+                        <ListItem key={text.text} disablePadding sx={{ display: 'block' }} onClick={text.function}>
                             <ListItemButton
                                 sx={{
                                     minHeight: 48,
@@ -192,11 +201,11 @@ export default function MiniDrawer() {
                                     }}
                                 >
                                     {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
-                                    {index == 0 && <StorageIcon />}
-                                    {index == 1 && <StorageIcon />}
-                                    {index == 2 && <StorageIcon />}
+                                    {index == 0 && <StorageIcon onClick={htmlTableRoute}/>}
+                                    {index == 1 && <StorageIcon onClick={cssTableRoute}/>}
+                                    {index == 2 && <StorageIcon onClick={jsTableRoute}/>}
                                 </ListItemIcon>
-                                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                                <ListItemText primary={text.text} sx={{ opacity: open ? 1 : 0 }} />
                             </ListItemButton>
                         </ListItem>
                     ))}

@@ -79,7 +79,7 @@ const deleteQuestion=async(firebaseId)=>{
     <Paper sx={{ width: '100%', overflow: 'hidden' , marginTop:"20px"}}>
 
 <Typography variant="h5" component="h5" style={{padding:"20px"}}>
-  HTML Questions
+  JavaScript Questions
 </Typography>
 <Divider component="h5" />
 

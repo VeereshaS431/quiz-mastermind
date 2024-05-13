@@ -20,9 +20,9 @@ import HtmlIcon from '@mui/icons-material/Html';
 import CssIcon from '@mui/icons-material/Css';
 import JavascriptIcon from '@mui/icons-material/Javascript';
 import StorageIcon from '@mui/icons-material/Storage';
-import { useNavigate } from 'react-router-dom';
-import HtmlTable from '../components/html-table';
-import CssTable from '../components/css-table';
+import { useNavigate, useParams } from 'react-router-dom';
+import UpdateHtml from '../components/inputComponents/update-inputs';
+import UpdateCss from '../components/inputComponents/css-update-input';
 
 const drawerWidth = 240;
 
@@ -92,21 +92,23 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 
-export default function CssTablePage() {
+export default function CssUpdatePage() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-    // const {htmlRoute,cssRoute}=React.useContext(DataShare)
     const navigate=useNavigate()
-    const htmlRoute=()=>{
+
+    const {firebaseId}=useParams();
+
+    const htmlRoute = () => {
         navigate("/html")
     }
-    const cssRoute=()=>{
+    const cssRoute = () => {
         navigate("/css")
     }
-    const jsRoute=()=>{
+    const jsRoute = () => {
         navigate("/javascript")
     }
-
+    
     const htmlTableRoute=()=>{
         navigate("/htmltable")
     }
@@ -157,8 +159,8 @@ export default function CssTablePage() {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {[{text:'HTML',function:htmlRoute}, {text:'CSS',function:cssRoute}, {text:"JavaScript",function:jsRoute}].map((text, index) => (
-                        <ListItem key={text.text} disablePadding sx={{ display: 'block' }} onClick={text.function}>
+                    {['HTML', 'CSS', 'JavaScript'].map((text, index) => (
+                        <ListItem key={text} disablePadding sx={{ display: 'block' }}>
                             <ListItemButton
                                 sx={{
                                     minHeight: 48,
@@ -173,12 +175,12 @@ export default function CssTablePage() {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    {index == 0 && <HtmlIcon onClick={htmlRoute}/>}
-                                    {index == 1 && <CssIcon onClick={cssRoute}/>}
-                                    {index == 2 && <JavascriptIcon onClick={jsRoute}/>}
+                                    {index == 0 && <HtmlIcon onClick={htmlRoute} />}
+                                    {index == 1 && <CssIcon onClick={cssRoute} />}
+                                    {index == 2 && <JavascriptIcon onClick={jsRoute} />}
 
                                 </ListItemIcon>
-                                <ListItemText primary={text.text} sx={{ opacity: open ? 1 : 0 }} />
+                                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                             </ListItemButton>
                         </ListItem>
                     ))}
@@ -201,7 +203,6 @@ export default function CssTablePage() {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
                                     {index == 0 && <StorageIcon onClick={htmlTableRoute}/>}
                                     {index == 1 && <StorageIcon onClick={cssTableRoute}/>}
                                     {index == 2 && <StorageIcon onClick={jsTableRoute}/>}
@@ -214,7 +215,10 @@ export default function CssTablePage() {
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
-                <CssTable/>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", flexDirection: "column" }}>
+                <h1>CSS Update</h1>
+                <UpdateCss firebaseId={firebaseId} />
+                </div>
             </Box>
         </Box>
     );

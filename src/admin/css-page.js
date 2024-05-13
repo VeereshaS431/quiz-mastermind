@@ -1,4 +1,3 @@
-import FullWidthTextField from "../components/inputComponents/text-full-width"
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -24,7 +23,9 @@ import CssIcon from '@mui/icons-material/Css';
 import JavascriptIcon from '@mui/icons-material/Javascript';
 import StorageIcon from '@mui/icons-material/Storage';
 import { HtmlPage } from './html-page';
-import { useNavigate } from "react-router-dom";
+import { DataShare } from '../routers/navigation-stack';
+import { useNavigate } from 'react-router-dom';
+import CssAddInput from '../components/inputComponents/css-add-input';
 
 const drawerWidth = 240;
 
@@ -93,9 +94,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
 );
 
+
 export default function CssPage() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    // const {htmlRoute,cssRoute}=React.useContext(DataShare)
     const navigate=useNavigate()
     const htmlRoute=()=>{
         navigate("/html")
@@ -105,6 +108,18 @@ export default function CssPage() {
     }
     const jsRoute=()=>{
         navigate("/javascript")
+    }
+
+    const htmlTableRoute=()=>{
+        navigate("/htmltable")
+    }
+
+    const cssTableRoute=()=>{
+        navigate("/csstable")
+    }
+
+    const jsTableRoute=()=>{
+        navigate("/javascriptTable")
     }
 
     const handleDrawerOpen = () => {
@@ -161,9 +176,9 @@ export default function CssPage() {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    {index == 0 && <HtmlIcon onClick={htmlRoute} />}
-                                    {index == 1 && <CssIcon onClick={cssRoute} />}
-                                    {index == 2 && <JavascriptIcon onClick={jsRoute} />}
+                                    {index == 0 && <HtmlIcon onClick={htmlRoute}/>}
+                                    {index == 1 && <CssIcon onClick={cssRoute}/>}
+                                    {index == 2 && <JavascriptIcon onClick={jsRoute}/>}
 
                                 </ListItemIcon>
                                 <ListItemText primary={text.text} sx={{ opacity: open ? 1 : 0 }} />
@@ -173,8 +188,8 @@ export default function CssPage() {
                 </List>
                 <Divider />
                 <List>
-                    {['HTML Data', 'CSS Data', 'JavaScript Data'].map((text, index) => (
-                        <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                    {[{text:'HTML Data',function:htmlTableRoute},{text:'CSS Data',function:cssTableRoute},{text:'JavaScript Data',function:jsTableRoute}].map((text, index) => (
+                        <ListItem key={text.text} disablePadding sx={{ display: 'block' }} onClick={text.function}>
                             <ListItemButton
                                 sx={{
                                     minHeight: 48,
@@ -189,11 +204,12 @@ export default function CssPage() {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    {index == 0 && <StorageIcon />}
-                                    {index == 1 && <StorageIcon />}
-                                    {index == 2 && <StorageIcon />}
+                                    {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
+                                    {index == 0 && <StorageIcon onClick={htmlTableRoute}/>}
+                                    {index == 1 && <StorageIcon onClick={cssTableRoute}/>}
+                                    {index == 2 && <StorageIcon onClick={jsTableRoute}/>}
                                 </ListItemIcon>
-                                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                                <ListItemText primary={text.text} sx={{ opacity: open ? 1 : 0 }} />
                             </ListItemButton>
                         </ListItem>
                     ))}
@@ -203,12 +219,9 @@ export default function CssPage() {
                 <DrawerHeader />
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", flexDirection: "column" }}>
                     <h1>CSS</h1>
-                    <FullWidthTextField />
+                    <CssAddInput/>
                 </div>
             </Box>
         </Box>
     );
 }
-
-
-

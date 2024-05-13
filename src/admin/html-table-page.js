@@ -94,8 +94,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function HtmlTablePage() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    // const {htmlRoute,cssRoute}=React.useContext(DataShare)
     const navigate=useNavigate()
-
     const htmlRoute=()=>{
         navigate("/html")
     }
@@ -104,6 +104,18 @@ export default function HtmlTablePage() {
     }
     const jsRoute=()=>{
         navigate("/javascript")
+    }
+
+    const htmlTableRoute=()=>{
+        navigate("/htmltable")
+    }
+
+    const cssTableRoute=()=>{
+        navigate("/csstable")
+    }
+
+    const jsTableRoute=()=>{
+        navigate("/javascriptTable")
     }
 
     const handleDrawerOpen = () => {
@@ -144,8 +156,8 @@ export default function HtmlTablePage() {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {['HTML', 'CSS', 'JavaScript'].map((text, index) => (
-                        <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                    {[{text:'HTML',function:htmlRoute}, {text:'CSS',function:cssRoute}, {text:"JavaScript",function:jsRoute}].map((text, index) => (
+                        <ListItem key={text.text} disablePadding sx={{ display: 'block' }} onClick={text.function}>
                             <ListItemButton
                                 sx={{
                                     minHeight: 48,
@@ -165,15 +177,15 @@ export default function HtmlTablePage() {
                                     {index == 2 && <JavascriptIcon onClick={jsRoute}/>}
 
                                 </ListItemIcon>
-                                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                                <ListItemText primary={text.text} sx={{ opacity: open ? 1 : 0 }} />
                             </ListItemButton>
                         </ListItem>
                     ))}
                 </List>
                 <Divider />
                 <List>
-                    {['HTML Data', 'CSS Data', 'JavaScript Data'].map((text, index) => (
-                        <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                    {[{text:'HTML Data',function:htmlTableRoute},{text:'CSS Data',function:cssTableRoute},{text:'JavaScript Data',function:jsTableRoute}].map((text, index) => (
+                        <ListItem key={text.text} disablePadding sx={{ display: 'block' }} onClick={text.function}>
                             <ListItemButton
                                 sx={{
                                     minHeight: 48,
@@ -188,11 +200,12 @@ export default function HtmlTablePage() {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    {index == 0 && <StorageIcon />}
-                                    {index == 1 && <StorageIcon />}
-                                    {index == 2 && <StorageIcon />}
+                                    {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
+                                    {index == 0 && <StorageIcon onClick={htmlTableRoute}/>}
+                                    {index == 1 && <StorageIcon onClick={cssTableRoute}/>}
+                                    {index == 2 && <StorageIcon onClick={jsTableRoute}/>}
                                 </ListItemIcon>
-                                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                                <ListItemText primary={text.text} sx={{ opacity: open ? 1 : 0 }} />
                             </ListItemButton>
                         </ListItem>
                     ))}
@@ -200,7 +213,7 @@ export default function HtmlTablePage() {
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
-               <HtmlTable/>
+                <HtmlTable/>
             </Box>
         </Box>
     );

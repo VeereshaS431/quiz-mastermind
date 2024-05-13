@@ -108,6 +108,18 @@ export default function HtmlUpdatePage() {
         navigate("/javascript")
     }
 
+    const htmlTableRoute=()=>{
+        navigate("/htmltable")
+    }
+
+    const cssTableRoute=()=>{
+        navigate("/csstable")
+    }
+
+    const jsTableRoute=()=>{
+        navigate("/javascriptTable")
+    }
+
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -174,8 +186,8 @@ export default function HtmlUpdatePage() {
                 </List>
                 <Divider />
                 <List>
-                    {['HTML Data', 'CSS Data', 'JavaScript Data'].map((text, index) => (
-                        <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                    {[{text:'HTML Data',function:htmlTableRoute},{text:'CSS Data',function:cssTableRoute},{text:'JavaScript Data',function:jsTableRoute}].map((text, index) => (
+                        <ListItem key={text.text} disablePadding sx={{ display: 'block' }} onClick={text.function}>
                             <ListItemButton
                                 sx={{
                                     minHeight: 48,
@@ -190,12 +202,11 @@ export default function HtmlUpdatePage() {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
-                                    {index == 0 && <StorageIcon />}
-                                    {index == 1 && <StorageIcon />}
-                                    {index == 2 && <StorageIcon />}
+                                     {index == 0 && <StorageIcon onClick={htmlTableRoute}/>}
+                                    {index == 1 && <StorageIcon onClick={cssTableRoute}/>}
+                                    {index == 2 && <StorageIcon onClick={jsTableRoute}/>}
                                 </ListItemIcon>
-                                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                                <ListItemText primary={text.text} sx={{ opacity: open ? 1 : 0 }} />
                             </ListItemButton>
                         </ListItem>
                     ))}
