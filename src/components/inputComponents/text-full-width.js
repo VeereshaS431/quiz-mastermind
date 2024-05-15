@@ -8,26 +8,36 @@ import { Button } from '@mui/material';
 
 export default function FullWidthTextField() {
   const [data, setData] = useState({
-    question: null,
-    optionA: null,
-    optionB: null,
-    optionC: null,
-    optionD: null,
-    answer: null
+    question: "",
+    options: ["","","",""],
+    answer: ""
   })
-
+  
   const onChangeHandler = (e) => {
-    const { name, value } = e.target
-    setData({ ...data, [name]: value })
-    console.log(name, value)
+      const { name, value } = e.target
+      if (name.startsWith("option")) {
+        const index = parseInt(name.split("-")[1]); // Get the index from the name attribute
+        const newOptions = [...data.options]; // Copy the current options
+        newOptions[index] = value; // Update the specific option
+        setData({ ...data, options: newOptions }); // Update the state with the new options array
+      } else {
+        setData({ ...data, [name]: value }); // Update the state for question and answer
+      }
   }
 
+  
   const saveData = async () => {
-    console.log(data)
+
+   console.log(data)
     const db = getDatabase(app);
     const newDoc = push(ref(db, "quize/html"));
     set(newDoc, data).then(() => {
       alert("data saved successfully")
+      setData({
+        question: "",
+        options: ["","","",""],
+        answer: ""
+      })
     }).catch((err) => {
       alert(err)
     })
@@ -43,12 +53,12 @@ export default function FullWidthTextField() {
       <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", rowGap: "20px" }}>
         <TextField name='question' value={data.question} onChange={onChangeHandler} fullWidth label="Question" id="fullWidth" required />
         <div style={{ display: "flex", columnGap: "20px" }}>
-          <TextField name='optionA' value={data.optionA} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
+          <TextField name="option-0" value={data.options[0]} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
             id="demo-helper-text-aligned"
             label="Option A"
             required
           />
-          <TextField name='optionB' value={data.optionB} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
+          <TextField name="option-1" value={data.options[1]} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
             id="demo-helper-text-aligned"
             label="Option B"
             required
@@ -56,12 +66,12 @@ export default function FullWidthTextField() {
         </div>
 
         <div style={{ display: "flex", columnGap: "20px" }}>
-          <TextField name='optionC' value={data.optionC} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
+          <TextField name='option-2' value={data.options[2]} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
             id="demo-helper-text-aligned"
             label="Option C"
             required
           />
-          <TextField name='optionD' value={data.optionD} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
+          <TextField name='option-3' value={data.options[3]} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
             id="demo-helper-text-aligned"
             label="Option D"
             required

@@ -109,21 +109,18 @@ const deleteQuestion=async(firebaseId)=>{
                         {row.question}
                         </TableCell>
 
-                        <TableCell align="left">
-                        {row.optionA}
-                        </TableCell>
+                        {
+                      row.options.map((each,index) => {
+                        return (
+                          <React.Fragment key={index}>
+                            <TableCell align="left">
+                              {each}
+                            </TableCell>
+                          </React.Fragment>
+                        )
+                      })
+                    }
 
-                        <TableCell align="left">
-                        {row.optionB}
-                        </TableCell>
-
-                        <TableCell align="left">
-                        {row.optionC}
-                        </TableCell>
-
-                        <TableCell align="left">
-                        {row.optionD}
-                        </TableCell>
 
                         <TableCell  align="left">
                         {row.answer}

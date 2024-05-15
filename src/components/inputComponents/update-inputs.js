@@ -8,15 +8,12 @@ import { Button } from '@mui/material';
 
 export default function UpdateHtml({firebaseId}) {
   const [data, setData] = useState({
-    question: null,
-    optionA: null,
-    optionB: null,
-    optionC: null,
-    optionD: null,
-    answer: null
+    question: "",
+    options: ["","","",""],
+    answer: ""
   })
-
   
+
   useEffect(()=>{
     const fetchData=async ()=>{
         const db=getDatabase(app)
@@ -25,7 +22,7 @@ export default function UpdateHtml({firebaseId}) {
         if(snapshot.exists()){
             const targetObject=snapshot.val();
           
-            setData({...data,question:targetObject.question,optionA:targetObject.optionA,optionB:targetObject.optionB,optionC:targetObject.optionC,optionD:targetObject.optionD,answer:targetObject.answer})
+            setData({...data,question:targetObject.question,options:targetObject.options,answer:targetObject.answer})
         }else{
             alert("error")
         }
@@ -36,12 +33,19 @@ export default function UpdateHtml({firebaseId}) {
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target
-    setData({ ...data, [name]: value })
-    console.log(name, value)
+    if (name.startsWith("option")) {
+      const index = parseInt(name.split("-")[1]); // Get the index from the name attribute
+      const newOptions = [...data.options]; // Copy the current options
+      newOptions[index] = value; // Update the specific option
+      setData({ ...data, options: newOptions }); // Update the state with the new options array
+    } else {
+      setData({ ...data, [name]: value }); // Update the state for question and answer
+    }
   }
 
+ 
+
   const overRideData = async () => {
-    console.log(data)
     const db = getDatabase(app);
     const newDoc = ref(db, "quize/html/"+firebaseId);
     set(newDoc, data).then(() => {
@@ -62,13 +66,13 @@ export default function UpdateHtml({firebaseId}) {
       <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", rowGap: "20px" }}>
         <TextField name='question' defaultValue={data.question} value={data.question} onChange={onChangeHandler} fullWidth label="Question" id="outlined-controlled" required InputLabelProps={{ shrink: true }}/>
         <div style={{ display: "flex", columnGap: "20px" }}>
-          <TextField name='optionA' value={data.optionA} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
+          <TextField name='option-0' value={data.options[0]} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
             id="doutlined-controlled"
             label="Option A"
             required
             InputLabelProps={{ shrink: true }}
           />
-          <TextField name='optionB' value={data.optionB} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
+          <TextField name='option-1' value={data.options[1]} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
             id="outlined-controlled"
             label="Option B"
             required
@@ -77,13 +81,13 @@ export default function UpdateHtml({firebaseId}) {
         </div>
 
         <div style={{ display: "flex", columnGap: "20px" }}>
-          <TextField name='optionC' value={data.optionC} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
+          <TextField name='option-2' value={data.options[2]} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
             id="outlined-controlled"
             label="Option C"
             required
             InputLabelProps={{ shrink: true }}
           />
-          <TextField name='optionD' value={data.optionD} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
+          <TextField name='option-3' value={data.options[3]} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
             id="outlined-controlled"
             label="Option D"
             required

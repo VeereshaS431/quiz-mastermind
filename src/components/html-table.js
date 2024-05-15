@@ -24,7 +24,7 @@ const columns = [
   { id: 'option D', label: 'Option D', minWidth: 100 },
   { id: 'answer', label: 'Answers', minWidth: 100 },
   { id: 'action', label: 'Actions', minWidth: 100 }
- 
+
 ];
 
 
@@ -32,39 +32,39 @@ const columns = [
 export default function HtmlTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [rows, setRows]=React.useState([])
- 
+  const [rows, setRows] = React.useState([])
 
 
-  React.useEffect(()=>{
+
+  React.useEffect(() => {
     fetchData()
-  },[])
-  const fetchData=async()=>{
-    const db=getDatabase(app)
-    const dbRef=ref(db, "quize/html");
-    const snapshot= await get(dbRef);
-    if(snapshot.exists()){
-        const mydata=snapshot.val()
-        console.log(mydata)
-        const tempArry=Object.keys(mydata).map(each=>{
-            return {
-                ...mydata[each],id:each
-            }
-        })
-        console.log(tempArry)
-        setRows(tempArry)
-    }else{
-        alert("No data")
+  }, [])
+  const fetchData = async () => {
+    const db = getDatabase(app)
+    const dbRef = ref(db, "quize/html");
+    const snapshot = await get(dbRef);
+    if (snapshot.exists()) {
+      const mydata = snapshot.val()
+      console.log(mydata)
+      const tempArry = Object.keys(mydata).map(each => {
+        return {
+          ...mydata[each], id: each
+        }
+      })
+      console.log(tempArry)
+      setRows(tempArry)
+    } else {
+      alert("No data")
     }
-}
+  }
 
-const deleteQuestion=async(firebaseId)=>{
+  const deleteQuestion = async (firebaseId) => {
     console.log(firebaseId)
-    const db=getDatabase(app)
-    const dbref=ref(db,"quize/html/"+firebaseId);
+    const db = getDatabase(app)
+    const dbref = ref(db, "quize/html/" + firebaseId);
     await remove(dbref);
     window.location.reload()
-}
+  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -76,12 +76,12 @@ const deleteQuestion=async(firebaseId)=>{
   };
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' , marginTop:"20px"}}>
+    <Paper sx={{ width: '100%', overflow: 'hidden', marginTop: "20px" }}>
 
-<Typography variant="h5" component="h5" style={{padding:"20px"}}>
-  HTML Questions
-</Typography>
-<Divider component="h5" />
+      <Typography variant="h5" component="h5" style={{ padding: "20px" }}>
+        HTML Questions
+      </Typography>
+      <Divider component="h5" />
 
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
@@ -104,38 +104,34 @@ const deleteQuestion=async(firebaseId)=>{
               .map((row) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                   
-                        <TableCell  align="left">
-                        {row.question}
-                        </TableCell>
 
-                        <TableCell align="left">
-                        {row.optionA}
-                        </TableCell>
+                    <TableCell align="left">
+                      {row.question}
+                    </TableCell>
+                    
+                    {
+                      row.options.map((each,index) => {
+                        return (
+                          <React.Fragment key={index}>
+                            <TableCell align="left">
+                              {each}
+                            </TableCell>
+                          </React.Fragment>
+                        )
+                      })
+                    }
 
-                        <TableCell align="left">
-                        {row.optionB}
-                        </TableCell>
+                    <TableCell align="left">
+                      {row.answer}
+                    </TableCell>
 
-                        <TableCell align="left">
-                        {row.optionC}
-                        </TableCell>
+                    <TableCell align="left">
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <span><IconButton onClick={() => deleteQuestion(row.id)}><DeleteIcon sx={{ "&:active": { color: "#FFBF00" } }} /></IconButton></span>
+                        <span><IconButton><Link to={`/htmlupdate/${row.id}`}><EditIcon /></Link></IconButton></span>
+                      </div>
+                    </TableCell>
 
-                        <TableCell align="left">
-                        {row.optionD}
-                        </TableCell>
-
-                        <TableCell  align="left">
-                        {row.answer}
-                        </TableCell>
-
-                        <TableCell align="left">
-                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                        <span><IconButton onClick={()=>deleteQuestion(row.id)}><DeleteIcon sx={{"&:active": { color: "#FFBF00" }}}/></IconButton></span>
-                        <span><IconButton><Link to={`/htmlupdate/${row.id}`}><EditIcon/></Link></IconButton></span>
-                        </div>
-                        </TableCell>
-                     
                   </TableRow>
                 );
               })}
