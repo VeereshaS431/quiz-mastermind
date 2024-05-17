@@ -10,6 +10,7 @@ import CssTablePage from "../admin/css-table-page"
 import JavaScriptTablePage from "../admin/javascript-table-page"
 import CssUpdatePage from "../admin/css-update-page"
 import JavaScriptUpdatePage from "../admin/javascript-update-page"
+import { HtmlData } from "../user components/html-data"
 
 
 
@@ -31,6 +32,9 @@ export const Navigation=()=>{
             <Route path="/htmlupdate/:firebaseId" Component={HtmlUpdatePage}/>
             <Route path="/cssupdate/:firebaseId" Component={CssUpdatePage}/>
             <Route path="/jsupdate/:firebaseId" Component={JavaScriptUpdatePage}/>
+
+
+            <Route path="/htmldata" Component={HtmlData}/>
         </Routes>
         </BrowserRouter>
         </DataShare.Provider>
