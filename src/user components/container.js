@@ -24,9 +24,7 @@ export default function SimpleContainer({data}) {
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="sm" style={{backgroundColor:"GrayText"}}>
-        <div>
         
-        </div>
       </Container>
     </React.Fragment>
   );
