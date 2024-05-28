@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import { get, getDatabase, push, ref, set } from "firebase/database"
 import { useEffect, useState } from "react"
 import { app } from '../../firebase/firebaseConfig';
-import { Button } from '@mui/material';
+import { Button, Container, Grid } from '@mui/material';
 
 
 export default function UpdateCss({firebaseId}) {
@@ -55,58 +55,102 @@ export default function UpdateCss({firebaseId}) {
 }
 
   return (
+    <Container>
     <Box
-    component="form"
       sx={{
-        width: 700,
-        maxWidth: '100%',
+        width: '100%',
+        maxWidth: '700px',
+        margin: '0 auto',
+        padding: '20px'
       }}
     >
-      <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", rowGap: "20px" }}>
-        <TextField name='question' defaultValue={data.question} value={data.question} onChange={onChangeHandler} fullWidth label="Question" id="outlined-controlled" required InputLabelProps={{ shrink: true }}/>
-        <div style={{ display: "flex", columnGap: "20px" }}>
-          <TextField name='option-0' value={data.options[0]} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
-            id="doutlined-controlled"
-            label="Option A"
+      <Grid container spacing={2} direction="column" alignItems="center">
+        <Grid item xs={12}  sx={{
+              width: '100%'
+            }}>
+          <TextField
+            name='question'
+            value={data.question}
+            onChange={onChangeHandler}
+            fullWidth
+            label="Question"
+            required
+            InputLabelProps={{ shrink: true }}
+           
+          />
+        </Grid>
+        <Grid item container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              name="option-0"
+              value={data.options[0]}
+              onChange={onChangeHandler}
+              fullWidth
+              label="Option A"
+              required
+              InputLabelProps={{ shrink: true }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              name="option-1"
+              value={data.options[1]}
+              onChange={onChangeHandler}
+              fullWidth
+              label="Option B"
+              required
+              InputLabelProps={{ shrink: true }}
+            />
+          </Grid>
+        </Grid>
+        <Grid item container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              name='option-2'
+              value={data.options[2]}
+              onChange={onChangeHandler}
+              fullWidth
+              label="Option C"
+              required
+              InputLabelProps={{ shrink: true }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              name='option-3'
+              value={data.options[3]}
+              onChange={onChangeHandler}
+              fullWidth
+              label="Option D"
+              required
+              InputLabelProps={{ shrink: true }}
+            />
+          </Grid>
+        </Grid>
+        <Grid item container spacing={2} direction="column" alignItems="center">
+        <Grid item xs={12} sx={{width:"100%"}}>
+          <TextField
+            name='answer'
+            value={data.answer}
+            onChange={onChangeHandler}
+            fullWidth
+            label="Answer"
             required
             InputLabelProps={{ shrink: true }}
           />
-          <TextField name='option-1' value={data.options[1]} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
-            id="outlined-controlled"
-            label="Option B"
-            required
-            InputLabelProps={{ shrink: true }}
-          />
-        </div>
-
-        <div style={{ display: "flex", columnGap: "20px" }}>
-          <TextField name='option-2' value={data.options[2]} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
-            id="outlined-controlled"
-            label="Option C"
-            required
-            InputLabelProps={{ shrink: true }}
-          />
-          <TextField name='option-3' value={data.options[3]} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
-            id="outlined-controlled"
-            label="Option D"
-            required
-            InputLabelProps={{ shrink: true }}
-          />
-        </div>
-        <TextField name='answer' value={data.answer} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
-          id="outlined-controlled"
-          label="Answer"
-          required
-          InputLabelProps={{ shrink: true }}
-        />
-        <Button
-        variant="contained" 
-        size="large"
-          onClick={overRideData}
-        >
-          Update
-        </Button>
-      </div>
+        </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={overRideData}
+          >
+            update
+          </Button>
+        </Grid>
+      </Grid>
     </Box>
+  </Container>
   );
 }

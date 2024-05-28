@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import { getDatabase, push, ref, set } from "firebase/database"
 import { useState } from "react"
 import { app } from '../../firebase/firebaseConfig';
-import { Button } from '@mui/material';
+import { Button, Container, Grid, Typography } from '@mui/material';
 
 
 export default function JavaScriptAddInput() {
@@ -12,7 +12,7 @@ export default function JavaScriptAddInput() {
     options: ["","","",""],
     answer: ""
   })
-
+  const [error, setError] = useState("");
   const onChangeHandler = (e) => {
     const { name, value } = e.target
       if (name.startsWith("option")) {
@@ -25,7 +25,16 @@ export default function JavaScriptAddInput() {
       }
   }
 
+  const validateData = () => {
+    if (!data.question || !data.answer || data.options.some(option => !option)) {
+      setError("All fields are required.");
+      return false;
+    }
+    return true;
+  };
+
   const saveData = async () => {
+    if (!validateData()) return;
     console.log(data)
     const db = getDatabase(app);
     const newDoc = push(ref(db, "quize/javascript"));
@@ -42,52 +51,97 @@ export default function JavaScriptAddInput() {
   }
 
   return (
+    <Container>
     <Box
       sx={{
-        width: 700,
-        maxWidth: '100%',
+        width: '100%',
+        maxWidth: '700px',
+        margin: '0 auto',
+        padding: '20px'
       }}
     >
-      <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", rowGap: "20px" }}>
-        <TextField name='question' value={data.question} onChange={onChangeHandler} fullWidth label="Question" id="fullWidth" required />
-        <div style={{ display: "flex", columnGap: "20px" }}>
-          <TextField name='option-0' value={data.options[0]} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
-            id="demo-helper-text-aligned"
-            label="Option A"
+      <Grid container spacing={2} direction="column" alignItems="center">
+        <Grid item xs={12}  sx={{
+              width: '100%'
+            }}>
+          <TextField
+            name='question'
+            value={data.question}
+            onChange={onChangeHandler}
+            fullWidth
+            label="Question"
+            required
+           
+          />
+        </Grid>
+        <Grid item container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              name="option-0"
+              value={data.options[0]}
+              onChange={onChangeHandler}
+              fullWidth
+              label="Option A"
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              name="option-1"
+              value={data.options[1]}
+              onChange={onChangeHandler}
+              fullWidth
+              label="Option B"
+              required
+            />
+          </Grid>
+        </Grid>
+        <Grid item container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              name='option-2'
+              value={data.options[2]}
+              onChange={onChangeHandler}
+              fullWidth
+              label="Option C"
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              name='option-3'
+              value={data.options[3]}
+              onChange={onChangeHandler}
+              fullWidth
+              label="Option D"
+              required
+            />
+          </Grid>
+        </Grid>
+        <Grid item container spacing={2} direction="column" alignItems="center">
+        <Grid item xs={12} sx={{width:"100%"}}>
+          <TextField
+            name='answer'
+            value={data.answer}
+            onChange={onChangeHandler}
+            fullWidth
+            label="Answer"
             required
           />
-          <TextField name='option-1' value={data.options[1]} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
-            id="demo-helper-text-aligned"
-            label="Option B"
-            required
-          />
-        </div>
-
-        <div style={{ display: "flex", columnGap: "20px" }}>
-          <TextField name='option-2' value={data.options[2]} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
-            id="demo-helper-text-aligned"
-            label="Option C"
-            required
-          />
-          <TextField name='options-3' value={data.options[3]} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
-            id="demo-helper-text-aligned"
-            label="Option D"
-            required
-          />
-        </div>
-        <TextField name='answer' value={data.answer} onChange={onChangeHandler} style={{ marginTop: "10px", width: "340px" }}
-          id="demo-helper-text-aligned"
-          label="Answer"
-          required
-        />
-        <Button
-        variant="contained" 
-        size="large"
-          onClick={saveData}
-        >
-          Submit
-        </Button>
-      </div>
+        </Grid>
+        </Grid>
+        {error && <Typography textAlign={"center"} color="error">{error}</Typography>}
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={saveData}
+          >
+            Submit
+          </Button>
+        </Grid>
+      </Grid>
     </Box>
+  </Container>
   );
 }

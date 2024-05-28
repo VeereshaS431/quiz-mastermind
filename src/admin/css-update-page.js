@@ -23,6 +23,7 @@ import StorageIcon from '@mui/icons-material/Storage';
 import { useNavigate, useParams } from 'react-router-dom';
 import UpdateHtml from '../components/inputComponents/update-inputs';
 import UpdateCss from '../components/inputComponents/css-update-input';
+import LogoutButton from '../loginPages/admin-logout';
 
 const drawerWidth = 240;
 
@@ -149,6 +150,7 @@ export default function CssUpdatePage() {
                     <Typography variant="h6" noWrap component="div">
                         Quiz Mastermind
                     </Typography>
+                    <LogoutButton/>
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>

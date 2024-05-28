@@ -23,6 +23,7 @@ import StorageIcon from '@mui/icons-material/Storage';
 import { useNavigate } from 'react-router-dom';
 import HtmlTable from '../components/html-table';
 import CssTable from '../components/css-table';
+import LogoutButton from '../loginPages/admin-logout';
 
 const drawerWidth = 240;
 
@@ -147,6 +148,7 @@ export default function CssTablePage() {
                     <Typography variant="h6" noWrap component="div">
                         Quiz Mastermind
                     </Typography>
+                    <LogoutButton/>
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>

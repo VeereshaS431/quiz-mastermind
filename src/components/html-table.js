@@ -7,64 +7,55 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { Divider, Typography } from '@mui/material';
-import { get, getDatabase, ref, remove } from "firebase/database"
+import { Divider, Typography, useMediaQuery, useTheme, IconButton, Box } from '@mui/material';
+import { get, getDatabase, ref, remove } from "firebase/database";
 import { app } from '../firebase/firebaseConfig';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-
 const columns = [
-  { id: 'questions', label: 'Questions', minWidth: 170 },
-  { id: 'option A', label: 'Option A', minWidth: 100 },
-  { id: 'option B', label: 'Option B', minWidth: 100 },
-  { id: 'option C', label: 'Option C', minWidth: 100 },
-  { id: 'option D', label: 'Option D', minWidth: 100 },
+  { id: 'question', label: 'Questions', minWidth: 170 },
+  { id: 'optionA', label: 'Option A', minWidth: 100 },
+  { id: 'optionB', label: 'Option B', minWidth: 100 },
+  { id: 'optionC', label: 'Option C', minWidth: 100 },
+  { id: 'optionD', label: 'Option D', minWidth: 100 },
   { id: 'answer', label: 'Answers', minWidth: 100 },
-  { id: 'action', label: 'Actions', minWidth: 100 }
-
+  { id: 'action', label: 'Actions', minWidth: 100 },
 ];
-
-
 
 export default function HtmlTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [rows, setRows] = React.useState([])
-
-
+  const [rows, setRows] = React.useState([]);
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   React.useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
+
   const fetchData = async () => {
-    const db = getDatabase(app)
+    const db = getDatabase(app);
     const dbRef = ref(db, "quize/html");
     const snapshot = await get(dbRef);
     if (snapshot.exists()) {
-      const mydata = snapshot.val()
-      console.log(mydata)
+      const mydata = snapshot.val();
       const tempArry = Object.keys(mydata).map(each => {
-        return {
-          ...mydata[each], id: each
-        }
-      })
-      console.log(tempArry)
-      setRows(tempArry)
+        return { ...mydata[each], id: each };
+      });
+      setRows(tempArry);
     } else {
-      alert("No data")
+      alert("No data");
     }
-  }
+  };
 
   const deleteQuestion = async (firebaseId) => {
-    console.log(firebaseId)
-    const db = getDatabase(app)
+    const db = getDatabase(app);
     const dbref = ref(db, "quize/html/" + firebaseId);
     await remove(dbref);
-    window.location.reload()
-  }
+    fetchData(); // Refresh data after deletion
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -76,68 +67,69 @@ export default function HtmlTable() {
   };
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden', marginTop: "20px" }}>
-
+    <Paper sx={{ width: '100%', overflowX: 'auto', marginTop: "20px" }}>
       <Typography variant="h5" component="h5" style={{ padding: "20px" }}>
         HTML Questions
       </Typography>
       <Divider component="h5" />
-
-      <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
+      {isSmallScreen ? (
+        rows.map((row) => (
+          <Paper key={row.id} sx={{ margin: '10px', padding: '10px' }}>
+            <Typography variant="h6">{row.question}</Typography>
+            {row.options.map((option, index) => (
+              <Typography key={index} variant="body1">{`Option ${String.fromCharCode(65 + index)}: ${option}`}</Typography>
+            ))}
+            <Typography variant="body1">{`Answer: ${row.answer}`}</Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
+              <IconButton onClick={() => deleteQuestion(row.id)}>
+                <DeleteIcon sx={{ "&:active": { color: "#FFBF00" } }} />
+              </IconButton>
+              <IconButton component={Link} to={`/htmlupdate/${row.id}`}>
+                <EditIcon />
+              </IconButton>
+            </Box>
+          </Paper>
+        ))
+      ) : (
+        <TableContainer sx={{ maxHeight: 440 }}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{ minWidth: column.minWidth }}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                  <TableCell align="left">{row.question}</TableCell>
+                  {row.options.map((option, index) => (
+                    <TableCell key={index} align="left">{option}</TableCell>
+                  ))}
+                  <TableCell align="left">{row.answer}</TableCell>
+                  <TableCell align="left">
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <IconButton onClick={() => deleteQuestion(row.id)}>
+                        <DeleteIcon sx={{ "&:active": { color: "#FFBF00" } }} />
+                      </IconButton>
+                      <IconButton component={Link} to={`/htmlupdate/${row.id}`}>
+                        <EditIcon />
+                      </IconButton>
+                    </Box>
+                  </TableCell>
+                </TableRow>
               ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-
-                    <TableCell align="left">
-                      {row.question}
-                    </TableCell>
-                    
-                    {
-                      row.options.map((each,index) => {
-                        return (
-                          <React.Fragment key={index}>
-                            <TableCell align="left">
-                              {each}
-                            </TableCell>
-                          </React.Fragment>
-                        )
-                      })
-                    }
-
-                    <TableCell align="left">
-                      {row.answer}
-                    </TableCell>
-
-                    <TableCell align="left">
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <span><IconButton onClick={() => deleteQuestion(row.id)}><DeleteIcon sx={{ "&:active": { color: "#FFBF00" } }} /></IconButton></span>
-                        <span><IconButton><Link to={`/htmlupdate/${row.id}`}><EditIcon /></Link></IconButton></span>
-                      </div>
-                    </TableCell>
-
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"

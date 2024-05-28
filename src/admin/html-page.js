@@ -17,13 +17,13 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import HtmlIcon from '@mui/icons-material/Html';
 import CssIcon from '@mui/icons-material/Css';
 import JavascriptIcon from '@mui/icons-material/Javascript';
 import StorageIcon from '@mui/icons-material/Storage';
 import { useNavigate } from "react-router-dom";
+import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutButton from "../loginPages/admin-logout";
 
 const drawerWidth = 240;
 
@@ -95,34 +95,29 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function HtmlPage() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-    const navigate=useNavigate()
-    const htmlRoute=()=>{
-        navigate("/html")
-    }
-    const cssRoute=()=>{
-        navigate("/css")
-    }
-    const jsRoute=()=>{
-        navigate("/javascript")
-    }
+    const navigate = useNavigate();
 
-    const htmlTableRoute=()=>{
-        navigate("/htmltable")
-    }
-
-    const cssTableRoute=()=>{
-        navigate("/csstable")
-    }
-
-    const jsTableRoute=()=>{
-        navigate("/javascriptTable")
-    }
-
-
+    const htmlRoute = () => {
+        navigate("/html");
+    };
+    const cssRoute = () => {
+        navigate("/css");
+    };
+    const jsRoute = () => {
+        navigate("/javascript");
+    };
+    const htmlTableRoute = () => {
+        navigate("/htmltable");
+    };
+    const cssTableRoute = () => {
+        navigate("/csstable");
+    };
+    const jsTableRoute = () => {
+        navigate("/javascriptTable");
+    };
     const handleDrawerOpen = () => {
         setOpen(true);
     };
-
     const handleDrawerClose = () => {
         setOpen(false);
     };
@@ -144,9 +139,10 @@ export default function HtmlPage() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap component="div">
+                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
                         Quiz Mastermind
                     </Typography>
+                    <LogoutButton/>
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>
@@ -157,8 +153,8 @@ export default function HtmlPage() {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                {[{text:'HTML',function:htmlRoute}, {text:'CSS',function:cssRoute}, {text:"JavaScript",function:jsRoute}].map((text, index) => (
-                        <ListItem key={text.text} disablePadding sx={{ display: 'block' }} onClick={text.function}>
+                    {[{ text: 'HTML', function: htmlRoute }, { text: 'CSS', function: cssRoute }, { text: "JavaScript", function: jsRoute }].map((item, index) => (
+                        <ListItem key={item.text} disablePadding sx={{ display: 'block' }} onClick={item.function}>
                             <ListItemButton
                                 sx={{
                                     minHeight: 48,
@@ -173,20 +169,19 @@ export default function HtmlPage() {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    {index == 0 && <HtmlIcon onClick={htmlRoute} />}
-                                    {index == 1 && <CssIcon onClick={cssRoute} />}
-                                    {index == 2 && <JavascriptIcon onClick={jsRoute} />}
-
+                                    {index === 0 && <HtmlIcon />}
+                                    {index === 1 && <CssIcon />}
+                                    {index === 2 && <JavascriptIcon />}
                                 </ListItemIcon>
-                                <ListItemText primary={text.text} sx={{ opacity: open ? 1 : 0 }} />
+                                <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
                             </ListItemButton>
                         </ListItem>
                     ))}
                 </List>
                 <Divider />
                 <List>
-                    {[{text:'HTML Data',function:htmlTableRoute},{text:'CSS Data',function:cssTableRoute},{text:'JavaScript Data',function:jsTableRoute}].map((text, index) => (
-                        <ListItem key={text.text} disablePadding sx={{ display: 'block' }} onClick={text.function}>
+                    {[{ text: 'HTML Data', function: htmlTableRoute }, { text: 'CSS Data', function: cssTableRoute }, { text: 'JavaScript Data', function: jsTableRoute }].map((item, index) => (
+                        <ListItem key={item.text} disablePadding sx={{ display: 'block' }} onClick={item.function}>
                             <ListItemButton
                                 sx={{
                                     minHeight: 48,
@@ -201,11 +196,9 @@ export default function HtmlPage() {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    {index == 0 && <StorageIcon onClick={htmlTableRoute}/>}
-                                    {index == 1 && <StorageIcon onClick={cssTableRoute}/>}
-                                    {index == 2 && <StorageIcon onClick={jsTableRoute}/>}
+                                    <StorageIcon />
                                 </ListItemIcon>
-                                <ListItemText primary={text.text} sx={{ opacity: open ? 1 : 0 }} />
+                                <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
                             </ListItemButton>
                         </ListItem>
                     ))}
@@ -213,13 +206,20 @@ export default function HtmlPage() {
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", flexDirection: "column" }}>
-                    <h1>HTML</h1>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        flexDirection: 'column'
+                    }}
+                >
+                    <Typography variant="h3">HTML</Typography>
                     <FullWidthTextField />
-                </div>
+                </Box>
             </Box>
         </Box>
     );
 }
-
 

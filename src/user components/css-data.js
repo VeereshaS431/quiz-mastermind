@@ -6,7 +6,7 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import TimerIcon from '@mui/icons-material/Timer';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
-export const HtmlData = () => {
+export const CssData = () => {
     const [data, setData] = useState([]);
     const [index, setIndex] = useState(null);
     const [quiz, setQuiz] = useState({
@@ -42,7 +42,7 @@ export const HtmlData = () => {
 
     const fetchData = async () => {
         const db = getDatabase(app);
-        const dbRef = ref(db, "quize/html");
+        const dbRef = ref(db, "quize/css");
         const snapshot = await get(dbRef);
         if (snapshot.exists()) {
             const mydata = snapshot.val();
@@ -128,7 +128,7 @@ export const HtmlData = () => {
                             <CssBaseline />
                             <Container maxWidth="sm" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '80px' }}>
                                 <Box sx={{ background: "rgb(2,0,36)",background: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(23,57,137,1) 29%, rgba(0,212,255,1) 100%)", width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', rowGap:"20px",flexDirection: 'column', borderRadius: '10px', p: 2 }}>
-                                    <Typography marginTop={5} textAlign={"center"} color={"white"} fontWeight={"bold"} variant="h4">Start The Quiz of HTML</Typography>
+                                    <Typography marginTop={5} textAlign={"center"} color={"white"} fontWeight={"bold"} variant="h4">Start The Quiz of CSS</Typography>
                                     <ThumbUpAltIcon style={{color:"white", fontSize:"50px"}}/>
                                     <Typography textAlign={"center"} color={"white"}>Good Luck!</Typography>
                                     <Typography textAlign={"center"} color={"white"}>Each Question: 30sec</Typography>

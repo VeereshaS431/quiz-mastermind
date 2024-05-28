@@ -22,6 +22,7 @@ import JavascriptIcon from '@mui/icons-material/Javascript';
 import StorageIcon from '@mui/icons-material/Storage';
 
 import { useNavigate } from 'react-router-dom';
+import LogoutButton from '../loginPages/admin-logout';
 
 const drawerWidth = 240;
 
@@ -146,6 +147,7 @@ export default function MiniDrawer() {
                     <Typography variant="h6" noWrap component="div">
                         Quiz Mastermind
                     </Typography>
+                    <LogoutButton/>
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>

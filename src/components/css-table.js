@@ -7,12 +7,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { Divider, Typography } from '@mui/material';
-import { get, getDatabase, ref, remove } from "firebase/database"
+import { Divider, Typography, useMediaQuery, useTheme, IconButton, Box } from '@mui/material';
+import { get, getDatabase, ref, remove } from "firebase/database";
 import { app } from '../firebase/firebaseConfig';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 
@@ -33,7 +32,8 @@ export default function CssTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows, setRows]=React.useState([])
- 
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
 
   React.useEffect(()=>{
@@ -59,11 +59,10 @@ export default function CssTable() {
 }
 
 const deleteQuestion=async(firebaseId)=>{
-    console.log(firebaseId)
-    const db=getDatabase(app)
-    const dbref=ref(db,"quize/css/"+firebaseId);
-    await remove(dbref);
-    window.location.reload()
+  const db = getDatabase(app);
+  const dbref = ref(db, "quize/css/" + firebaseId);
+  await remove(dbref);
+  fetchData(); // Refresh data after deletion
 }
 
   const handleChangePage = (event, newPage) => {
@@ -76,13 +75,30 @@ const deleteQuestion=async(firebaseId)=>{
   };
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' , marginTop:"20px"}}>
-
-<Typography variant="h5" component="h5" style={{padding:"20px"}}>
-  CSS Questions
-</Typography>
-<Divider component="h5" />
-
+    <Paper sx={{ width: '100%', overflowX: 'auto', marginTop: "20px" }}>
+    <Typography variant="h5" component="h5" style={{ padding: "20px" }}>
+      CSS Questions
+    </Typography>
+    <Divider component="h5" />
+    {isSmallScreen ? (
+      rows.map((row) => (
+        <Paper key={row.id} sx={{ margin: '10px', padding: '10px' }}>
+          <Typography variant="h6">{row.question}</Typography>
+          {row.options.map((option, index) => (
+            <Typography key={index} variant="body1">{`Option ${String.fromCharCode(65 + index)}: ${option}`}</Typography>
+          ))}
+          <Typography variant="body1">{`Answer: ${row.answer}`}</Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
+            <IconButton onClick={() => deleteQuestion(row.id)}>
+              <DeleteIcon sx={{ "&:active": { color: "#FFBF00" } }} />
+            </IconButton>
+            <IconButton component={Link} to={`/htmlupdate/${row.id}`}>
+              <EditIcon />
+            </IconButton>
+          </Box>
+        </Paper>
+      ))
+    ) : (
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -99,55 +115,38 @@ const deleteQuestion=async(firebaseId)=>{
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                   
-                        <TableCell  align="left">
-                        {row.question}
-                        </TableCell>
-
-                        {
-                      row.options.map((each,index) => {
-                        return (
-                          <React.Fragment key={index}>
-                            <TableCell align="left">
-                              {each}
-                            </TableCell>
-                          </React.Fragment>
-                        )
-                      })
-                    }
-
-
-                        <TableCell  align="left">
-                        {row.answer}
-                        </TableCell>
-
-                        <TableCell align="left">
-                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                        <span><IconButton onClick={()=>deleteQuestion(row.id)}><DeleteIcon sx={{"&:active": { color: "#FFBF00" }}}/></IconButton></span>
-                        <span><IconButton><Link to={`/cssupdate/${row.id}`}><EditIcon/></Link></IconButton></span>
-                        </div>
-                        </TableCell>
-                     
-                  </TableRow>
-                );
-              })}
+            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+              <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                <TableCell align="left">{row.question}</TableCell>
+                {row.options.map((option, index) => (
+                  <TableCell key={index} align="left">{option}</TableCell>
+                ))}
+                <TableCell align="left">{row.answer}</TableCell>
+                <TableCell align="left">
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <IconButton onClick={() => deleteQuestion(row.id)}>
+                      <DeleteIcon sx={{ "&:active": { color: "#FFBF00" } }} />
+                    </IconButton>
+                    <IconButton component={Link} to={`/cssupdate/${row.id}`}>
+                      <EditIcon />
+                    </IconButton>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+    )}
+    <TablePagination
+      rowsPerPageOptions={[10, 25, 100]}
+      component="div"
+      count={rows.length}
+      rowsPerPage={rowsPerPage}
+      page={page}
+      onPageChange={handleChangePage}
+      onRowsPerPageChange={handleChangeRowsPerPage}
+    />
+  </Paper>
   );
 }

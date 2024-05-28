@@ -26,6 +26,7 @@ import { HtmlPage } from './html-page';
 import { DataShare } from '../routers/navigation-stack';
 import { useNavigate } from 'react-router-dom';
 import CssAddInput from '../components/inputComponents/css-add-input';
+import LogoutButton from '../loginPages/admin-logout';
 
 const drawerWidth = 240;
 
@@ -150,6 +151,7 @@ export default function CssPage() {
                     <Typography variant="h6" noWrap component="div">
                         Quiz Mastermind
                     </Typography>
+                    <LogoutButton/>
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>

@@ -20,11 +20,8 @@ import HtmlIcon from '@mui/icons-material/Html';
 import CssIcon from '@mui/icons-material/Css';
 import JavascriptIcon from '@mui/icons-material/Javascript';
 import StorageIcon from '@mui/icons-material/Storage';
-import { useNavigate, useParams } from 'react-router-dom';
-import UpdateHtml from '../components/inputComponents/update-inputs';
-import UpdateCss from '../components/inputComponents/css-update-input';
-import UpdateJavascript from '../components/inputComponents/js-update-input';
-import LogoutButton from '../loginPages/admin-logout';
+
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -94,36 +91,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 
-export default function JavaScriptUpdatePage() {
+export default function UserDrawer({children,functions}) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-    const navigate=useNavigate()
-
-    const {firebaseId}=useParams();
-
-    const htmlRoute = () => {
-        navigate("/html")
-    }
-    const cssRoute = () => {
-        navigate("/css")
-    }
-    const jsRoute = () => {
-        navigate("/javascript")
-    }
-
+    // const {htmlRoute,cssRoute}=React.useContext(DataShare)
     
-    const htmlTableRoute=()=>{
-        navigate("/htmltable")
-    }
-
-    const cssTableRoute=()=>{
-        navigate("/csstable")
-    }
-
-    const jsTableRoute=()=>{
-        navigate("/javascriptTable")
-    }
-
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -152,7 +124,6 @@ export default function JavaScriptUpdatePage() {
                     <Typography variant="h6" noWrap component="div">
                         Quiz Mastermind
                     </Typography>
-                    <LogoutButton/>
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>
@@ -163,35 +134,7 @@ export default function JavaScriptUpdatePage() {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {['HTML', 'CSS', 'JavaScript'].map((text, index) => (
-                        <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                            >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    {index == 0 && <HtmlIcon onClick={htmlRoute} />}
-                                    {index == 1 && <CssIcon onClick={cssRoute} />}
-                                    {index == 2 && <JavascriptIcon onClick={jsRoute} />}
-
-                                </ListItemIcon>
-                                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    {[{text:'HTML Data',function:htmlTableRoute},{text:'CSS Data',function:cssTableRoute},{text:'JavaScript Data',function:jsTableRoute}].map((text, index) => (
+                    {[{text:'HTML',function:functions.htmlquizRoute}, {text:'CSS',function:functions.cssquizRoute}, {text:"JavaScript",function:functions.jsquizRoute}].map((text, index) => (
                         <ListItem key={text.text} disablePadding sx={{ display: 'block' }} onClick={text.function}>
                             <ListItemButton
                                 sx={{
@@ -207,9 +150,10 @@ export default function JavaScriptUpdatePage() {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                   {index == 0 && <StorageIcon onClick={htmlTableRoute}/>}
-                                    {index == 1 && <StorageIcon onClick={cssTableRoute}/>}
-                                    {index == 2 && <StorageIcon onClick={jsTableRoute}/>}
+                                    {index == 0 && <HtmlIcon onClick={functions.htmlquizRoute}/>}
+                                    {index == 1 && <CssIcon onClick={functions.cssquizRoute}/>}
+                                    {index == 2 && <JavascriptIcon onClick={functions.jsquizRoute}/>}
+
                                 </ListItemIcon>
                                 <ListItemText primary={text.text} sx={{ opacity: open ? 1 : 0 }} />
                             </ListItemButton>
@@ -219,10 +163,7 @@ export default function JavaScriptUpdatePage() {
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", flexDirection: "column" }}>
-                <h1>JavaScript Update</h1>
-                <UpdateJavascript firebaseId={firebaseId} />
-                </div>
+                {children}
             </Box>
         </Box>
     );
