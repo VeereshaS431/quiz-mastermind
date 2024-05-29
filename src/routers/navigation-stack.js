@@ -17,6 +17,9 @@ import { JavaScriptQuiz } from "../user/js-quiz";
 import { UserRegisterPage } from "../loginPages/user";
 import QuizInstructions from "../user/user-instruction";
 import { AdminLoginPAge } from "../loginPages/admin-login";
+import { UserHistory } from "../user/user-history";
+import { ProfilePage } from "../user/profile-page";
+// import Profile from "../user components/profile";
 
 export const DataShare = createContext();
 
@@ -54,7 +57,8 @@ export const Navigation = () => {
         <DataShare.Provider value={{
             changeLogControl,
             adminChangeLogControl,
-            adminChangeLogControlForSignOut
+            adminChangeLogControlForSignOut,
+            setLogControl
         }}>
             <BrowserRouter>
                 {
@@ -81,6 +85,8 @@ export const Navigation = () => {
                                     <Route path="/htmlquiz" Component={HtmlQuiz} />
                                     <Route path="/cssquiz" Component={CssQuiz} />
                                     <Route path="/jsquiz" Component={JavaScriptQuiz} />
+                                    <Route path="/history" Component={UserHistory}/>
+                                    <Route path="/profile" Component={ProfilePage}/>
                                 </Routes>
                             )
                         :

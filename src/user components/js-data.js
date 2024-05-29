@@ -1,10 +1,11 @@
 import { get, getDatabase, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
-import { app } from "../firebase/firebaseConfig";
+import { app, auth, db } from "../firebase/firebaseConfig";
 import { Box, Button, Container, CssBaseline, Grid, Typography } from "@mui/material";
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import TimerIcon from '@mui/icons-material/Timer';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import { addDoc, collection } from "firebase/firestore";
 
 export const JavaScriptData = () => {
     const [data, setData] = useState([]);
@@ -36,6 +37,9 @@ export const JavaScriptData = () => {
                     return prev - 1;
                 });
             }, 1000);
+        }
+        if(index==randomData.length){
+            saveQuizResult()
         }
         return () => clearInterval(timer);
     }, [index]);
@@ -82,6 +86,7 @@ export const JavaScriptData = () => {
             update(index + 1);
         } else {
             setIndex(randomData.length);
+           
         }
     };
 
@@ -95,6 +100,31 @@ export const JavaScriptData = () => {
         }
         setTimeout(increment, 1000);
     };
+
+
+    const saveQuizResult = async () => {
+        if (!auth.currentUser) {
+            alert('Please log in to save your results.');
+            return;
+        }
+        const userId = auth.currentUser.uid;
+        const resultData = {
+            currect,
+            wrong,
+            unanswered: randomData.length - (currect + wrong),
+            percentage: (currect / randomData.length) * 100,
+            date: new Date().toISOString(),
+            type:"Javascript"
+        };
+        try {
+            const userResultsRef = collection(db, 'quizResults', userId, 'results');
+            await addDoc(userResultsRef, resultData);
+            console.log('Quiz result saved successfully!');
+        } catch (error) {
+            console.error('Error saving quiz result:', error);
+        }
+    };
+
 
     return (
         <>

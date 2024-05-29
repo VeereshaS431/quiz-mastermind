@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom"
-import CssData from "../user components/css-data"
+import QuizHistory from "../user components/quiz-history"
 import UserDrawer from "../user components/user-drawer"
 
-export const CssQuiz=()=>{
+export const UserHistory=()=>{
     const navigate=useNavigate()
     const htmlquizRoute=()=>{
         navigate("/htmlquiz")
@@ -14,10 +14,8 @@ export const CssQuiz=()=>{
         navigate("/jsquiz")
     }
     return(
-        <>
         <UserDrawer functions={{htmlquizRoute,cssquizRoute,jsquizRoute}}>
-            <CssData/>
+            <QuizHistory/>
         </UserDrawer>
-        </>
     )
 }
