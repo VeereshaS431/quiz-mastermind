@@ -51,10 +51,36 @@ export const AdminLoginPAge=()=>{
             });
     };
 
+    const stylePart={
+        '& .MuiInputBase-input': {
+            color: 'white', // text color
+          },
+        '& .MuiOutlinedInput-root': {
+          '& fieldset': {
+            borderColor: 'white', // default color
+          },
+          '&:hover fieldset': {
+            borderColor: '#B4B4B8', // hover color
+          },
+          '&.Mui-focused fieldset': {
+            borderColor: '#C7C8CC', // focused color
+          },
+        },
+        '& .MuiInputLabel-root': {
+            color: 'white', // default label color
+          },
+          '& .MuiInputLabel-root.Mui-focused': {
+            color: '#C7C8CC', // focused label color
+          },
+          '& .MuiInputLabel-root.Mui-error': {
+            color: 'red', // error label color
+          },
+      }
+
     return(
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 5, height: "80vh", justifyContent: "center" }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 5, justifyContent: "center", border: "1px solid black", borderRadius: "10px", padding: "20px 0", minWidth: 300, width: "40vw" }}>
-            <Typography variant="h4" sx={{ mt: 3 }}>Admin Login</Typography>
+        <Box sx={{ background: "rgb(2,0,36)",background: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(23,57,137,1) 29%, rgba(0,212,255,1) 100%)",display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 5, justifyContent: "center", border: "1px solid black", borderRadius: "15px", padding: "20px 0", minWidth: 300, width: "40vw",boxShadow: "21px 18px 21px -3px rgba(84,81,84,1)" }}>
+            <Typography variant="h4" sx={{ mt: 3,color:"white",fontFamily:"monospace" }}>Admin Login</Typography>
             <Box component="form" onSubmit={loginSubmitHandler} sx={{ mt: 2, width: '90%' }}>
                 <TextField
                     name="email"
@@ -64,6 +90,7 @@ export const AdminLoginPAge=()=>{
                     fullWidth
                     required
                     margin="normal"
+                    sx={stylePart}
                 />
                 <TextField
                     name="password"
@@ -74,12 +101,13 @@ export const AdminLoginPAge=()=>{
                     fullWidth
                     required
                     margin="normal"
+                    sx={stylePart}
                 />
                 {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
-                <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
+                <Button type="submit" variant="contained" fullWidth sx={{ mt: 2,backgroundColor:"white",color:"black",'&:hover':{backgroundColor:"#B7B6B5",color:"black"}}}>
                     Sign In
                 </Button>
-                <Typography sx={{ mt: 1,cursor: 'pointer' }} onClick={()=>navigate("/")}>User LoginPage</Typography>
+                <Typography sx={{ mt: 1,cursor: 'pointer', color:"white"}} onClick={()=>navigate("/")}>User LoginPage</Typography>
             </Box>
         </Box>
     </Box>
