@@ -99,6 +99,8 @@ export const UserRegisterPage = () => {
                 const user = result.user;
                 alert("Signed in with Google");
                 console.log(user);
+                changeLogControl()
+                navigate("/")
             })
             .catch((error) => {
                 setError(error.message);
